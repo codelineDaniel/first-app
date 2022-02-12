@@ -1,0 +1,74 @@
+@keyframes entry {
+  0% {
+    opacit: 0;
+    top: 35px;
+  }
+  100% {
+    opacty: 1;
+    top: 0;
+  }
+}
+
+.wrapper {
+  position: relative;
+  background-color: #454858;
+  min-width: 60vw;
+  max-width: 90vw;
+  min-height: 90vh;
+  margin: 0 auto;
+  box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4.375rem 0;
+  animation: entry 0.5s ease-in-out;
+
+  .title {
+    font-size: 5.75rem;
+    width: 11ch;
+    text-align: center;
+    font-weight: 900;
+    color: #fff;
+  }
+
+  .info {
+    color: #6ff6bd;
+    font-weight: 100;
+    text-align: center;
+    font-size: 1.3125rem;
+
+    .loginInput {
+      width: 406px;
+      font-size: 1.9375rem;
+      border: none;
+      outline: none;
+      border-radius: 7px;
+      padding: 18px 0 18px 34px;
+      margin-top: 10px;
+    }
+  }
+
+  .loginError {
+    color: red;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .wrapper {
+    min-height: 0;
+    .title {
+      width: 100%;
+    }
+    .info {
+      font-size: 4rem;
+      width: 100%;
+      margin: 40px 0;
+      .loginInput {
+        width: 90%;
+      }
+    }
+  }
+}
