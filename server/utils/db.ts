@@ -1,6 +1,6 @@
 const { createPool } = require("mysql2/promise");
 
-const pool = createPool({
+export const pool = createPool({
   host: "localhost",
   user: "root",
   database: "quiz_app",
@@ -8,6 +8,3 @@ const pool = createPool({
   decimalNumbers: true,
 });
 
-module.exports = {
-  pool,
-};

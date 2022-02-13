@@ -1,7 +1,9 @@
-class ValidationError extends Error {}
-class isExistedError extends Error {}
+import {Request, Response ,NextFunction} from "express";
 
-const handleError = (err, req, res, next) => {
+export class ValidationError extends Error {}
+export class isExistedError extends Error {}
+
+export const handleError = (err: Error, req: Request, res: Response, next: NextFunction) => {
   // console.error(err);
   if (err instanceof ValidationError) {
     res.status(err instanceof ValidationError ? 400 : 500).send({
@@ -20,8 +22,4 @@ const handleError = (err, req, res, next) => {
   }
 };
 
-module.exports = {
-  handleError,
-  ValidationError,
-  isExistedError,
-};
+

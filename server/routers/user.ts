@@ -1,7 +1,7 @@
-const { Router } = require("express");
-const { UserRecord } = require("../records/user.record");
+import { Router } from "express";
+import { UserRecord } from "../records/user.record";
 
-const userRouter = Router();
+export const userRouter = Router();
 
 userRouter
   .get("/", async (req, res) => {
@@ -19,6 +19,4 @@ userRouter
     res.send(newUser);
   });
 
-module.exports = {
-  userRouter,
-};
+

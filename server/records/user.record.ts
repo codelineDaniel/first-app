@@ -1,9 +1,16 @@
-const { pool } = require("../utils/db");
-const { ValidationError, isExistedError } = require("../utils/error");
-const { v4: uuid } = require("uuid");
+import { pool } from "../utils/db";
+import { ValidationError, isExistedError } from "../utils/error";
+import { v4 as uuid } from "uuid";
+import {FieldPacket} from "mysql2";
 
-class UserRecord {
-  constructor(obj) {
+type UserRecordResults = [UserRecord[], FieldPacket[]];
+
+export class UserRecord {
+  public id?: string;
+  public user: string;
+  public score: number;
+
+  constructor(obj: UserRecord) {
     if (!obj.user || obj.user.length < 3 || obj.user.length > 25) {
       throw new ValidationError("Imię musi mieć od 3 do 25 znaków.");
     }
@@ -13,8 +20,8 @@ class UserRecord {
     this.score = obj.score;
   }
 
-  async insert() {
-    const [result] = await pool.execute("SELECT * FROM `scores`");
+  async insert(): Promise<string> {
+    const [result] = (await pool.execute("SELECT * FROM `scores`")) as UserRecordResults;
     const existed = result.filter((item) => item.user === this.user);
     if (existed.length > 0) {
       throw new isExistedError("Podana nazwa użytkownika jest już zajęta");
@@ -34,15 +41,15 @@ class UserRecord {
     return this.id;
   }
 
-  static async listAll() {
-    const [results] = await pool.execute(
+  static async listAll(): Promise<UserRecord[]> {
+    const [results] = (await pool.execute(
       "SELECT * FROM `scores` ORDER BY `score` DESC"
-    );
+    )) as UserRecordResults;
     return results.map((item) => new UserRecord(item));
     // return results;
   }
 
-  async updateOne() {
+  async updateOne(): Promise<void> {
     await pool.execute(
       "UPDATE `scores` SET `user` = :user, `score` = :score WHERE `user` = :user",
       {
@@ -51,17 +58,5 @@ class UserRecord {
       }
     );
   }
-  static async getOne() {
-    const [results] = await pool.execute(
-      "SELECT * FROM `scores` WHERE `user` = :user",
-      {
-        user: this.user,
-      }
-    );
-    return results.length > 0 ? null : results;
-  }
 }
 
-module.exports = {
-  UserRecord,
-};
