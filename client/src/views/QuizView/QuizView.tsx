@@ -1,19 +1,29 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./QuizView.module.scss";
 import questions from "../../data/questions";
 import Button from "../../components/Button/Button";
 
-const QuizView = ({ userAnswers, setUserAnswers }) => {
-  const [currentQuestions, setCurrentQuestions] = useState(0);
-  const [notChecked, setNotChecked] = useState(true);
+export interface QuizViewProps {
+  userAnswers: boolean[];
+  setUserAnswers: React.Dispatch<React.SetStateAction<boolean[]>>;
+}
+
+const QuizView: React.FC<QuizViewProps> = ({ userAnswers, setUserAnswers }) => {
+  const [currentQuestions, setCurrentQuestions] = useState<number>(0);
+  const [notChecked, setNotChecked] = useState<boolean>(true);
   // const [userAnswers, setUserAnswers] = useState([]);
 
-  const addAnswer = () => {
-    const allRadioInput = document.querySelectorAll('input[type="radio"]');
+  useEffect(() => {
+    setUserAnswers([]);
+  },[]);
+
+
+  const addAnswer = (): void => {
+    const allRadioInput: HTMLInputElement[] = Array.from(document.querySelectorAll('input[type="radio"]'));
     for (const input of allRadioInput) {
       if (input.checked) {
         questions[currentQuestions].answers.forEach((answers) => {
-          if (answers.answer === input.nextElementSibling.textContent) {
+          if (answers.answer === input.nextElementSibling?.textContent)  {
             setUserAnswers((prevState) => [...prevState, answers.correct]);
           }
         });

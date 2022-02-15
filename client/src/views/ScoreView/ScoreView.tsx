@@ -3,11 +3,21 @@ import { useNavigate } from "react-router-dom";
 import styles from "./ScoreView.module.scss";
 import Button from "../../components/Button/Button";
 
-const ScoreView = ({ userAnswers, user }) => {
+export interface ScoreViewProps {
+  userAnswers: boolean[];
+  setUserAnswers: React.Dispatch<React.SetStateAction<boolean[]>>;
+  user: string;
+}
+
+const ScoreView: React.FC<ScoreViewProps> = ({ userAnswers,setUserAnswers , user }) => {
   const navigate = useNavigate();
   const correctAnswer = userAnswers.filter((item) => item === true);
 
-  const updateScoreAndOpenTable = async () => {
+  const clearUserAnswers = async (): Promise<void> => {
+    await setUserAnswers([]);
+  }
+
+  const updateScoreAndOpenTable = async (): Promise<void> => {
     const response = await fetch("http://localhost:3001/user/updateUser", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -18,7 +28,12 @@ const ScoreView = ({ userAnswers, user }) => {
     });
     const data = await response.json();
     data && navigate("/table");
+    await clearUserAnswers();
   };
+
+
+
+
 
   return (
     <div className={styles.wrapper}>

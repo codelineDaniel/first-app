@@ -5,9 +5,9 @@ import QuizView from "../QuizView/QuizView";
 import ScoreView from "../ScoreView/ScoreView";
 import TableView from "../TableView/TableView";
 
-const App = () => {
-  const [userAnswers, setUserAnswers] = useState([]);
-  const [user, setUser] = useState("");
+const App: React.FC = () => {
+  const [userAnswers, setUserAnswers] = useState<boolean[]>([]);
+  const [user, setUser] = useState<string>("");
 
   return (
     <BrowserRouter>
@@ -15,7 +15,7 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={<LoginView user={user} setUser={setUser} />}
+            element={<LoginView user={user} setUser={setUser} setUserAnswers={setUserAnswers}/>}
           />
           {user ? (
             <>
@@ -30,7 +30,7 @@ const App = () => {
               />
               <Route
                 path="/score"
-                element={<ScoreView userAnswers={userAnswers} user={user} />}
+                element={<ScoreView userAnswers={userAnswers} setUserAnswers={setUserAnswers} user={user} />}
               />
               <Route path="/table" element={<TableView />} />
             </>

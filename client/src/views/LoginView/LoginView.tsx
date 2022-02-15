@@ -1,20 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   NotificationContainer,
   NotificationManager,
+    // @ts-ignore
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import styles from "./LoginView.module.scss";
 import Button from "../../components/Button/Button";
 import Modal from "../../components/Modal/Modal";
 
-const LoginView = ({ user, setUser }) => {
-  // const [login, setLogin] = useState("");
+export interface LoginViewProps {
+  user: string;
+  setUser: React.Dispatch<React.SetStateAction<string>>;
+  setUserAnswers: React.Dispatch<React.SetStateAction<boolean[]>>;
+}
+
+const LoginView: React.FC<LoginViewProps> = ({ user, setUser, setUserAnswers }) => {
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  const sendDataToBackend = async () => {
+  useEffect(() => {
+    setUserAnswers([]);
+  },[]);
+
+  const sendDataToBackend = async (): Promise<void> => {
     const response = await fetch("http://localhost:3001/user/addUser", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -40,10 +51,6 @@ const LoginView = ({ user, setUser }) => {
   //     ? NotificationManager.error(data.message)
   //     : navigate("/quiz")}
   // </>;
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
 
   return (
     <>
@@ -73,7 +80,7 @@ const LoginView = ({ user, setUser }) => {
           onClickFn={sendDataToBackend}
         />
       </div>
-      {isModalOpen && <Modal closeModalFn={closeModal} />}
+      {isModalOpen && <Modal onClickFn={() => setIsModalOpen(false)}/>}
     </>
   );
 };

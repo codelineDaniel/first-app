@@ -1,3 +1,15 @@
+export interface Answers {
+  answerNumber: number;
+  answer: string;
+  correct: boolean;
+}
+
+export interface Questions {
+  questionNumber: number;
+  question: string;
+  answers: Answers[];
+}
+
 const questions = [
   {
     questionNumber: 1,

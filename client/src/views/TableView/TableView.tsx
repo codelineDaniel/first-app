@@ -3,10 +3,16 @@ import styles from "./TableView.module.scss";
 import Button from "../../components/Button/Button";
 import questions from "../../data/questions";
 
+export interface IallUsers {
+    id: string;
+    user: string;
+    score: number;
+}
+
 const TableView = () => {
-  const [allUsers, setAllUsers] = useState([]);
-  useEffect(() => {
-    const getData = async () => {
+  const [allUsers, setAllUsers] = useState<IallUsers[]>([]);
+  useEffect((): void => {
+    const getData = async (): Promise<void> => {
       const response = await fetch("http://localhost:3001/user");
       const data = await response.json();
       setAllUsers([...data]);
